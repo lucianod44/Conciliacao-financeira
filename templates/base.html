@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>Upload de Arquivo</title>
+
+    <script>
+        function toggleTable() {
+            let tableContainer = document.getElementById("table-container");
+            let btn = document.getElementById("toggle-btn");
+
+            if (tableContainer.style.display === "none") {
+                tableContainer.style.display = "block";
+                btn.textContent = "Recolher";
+            } else {
+                tableContainer.style.display = "none";
+                btn.textContent = "Expandir";
+            }
+        }
+    </script>
+
+</head>
+<body>
+
+    <!-- Barra de Navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Conciliação Bancária</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('upload_file') }}">Carregar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('conciliar') }}">Conciliação</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Container principal -->
+    <div class="container mt-5">
+        <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+            <div class="row mb-3 align-items-end">
+                <!-- Select Empresa -->
+                <div class="col-md-6">
+                    <label for="empresa" class="form-label fw-bold">Selecione a Empresa:</label>
+                    <select class="form-select" id="empresa" name="empresa" required>
+                        <option value="">Escolha uma empresa...</option>
+                        {% for empresa in empresas %}
+                            <option value="{{ empresa.CD_MULTI_EMPRESA }}">{{ empresa.DS_MULTI_EMPRESA }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Input Arquivo -->
+                <div class="col-md-6">
+                    <label for="file" class="form-label fw-bold">Selecione o Arquivo:</label>
+                    <input class="form-control" type="file" name="file" id="file" required>
+                </div>
+            </div>
+
+            <!-- Botão Centralizado -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-upload"></i> Carregar Arquivo
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Exibir a Tabela de Resultados (se houver) -->
+    {% if table_html %}
+    <div class="card shadow-sm p-4 mt-4">
+        <h4 class="text-center">Dados Carregados</h4>
+        <div class="text-center">
+            <button type="button" class="expand-btn" id="toggle-btn" onclick="toggleTable()">
+                <i class="fas fa-expand"></i> Expandir
+            </button>
+        </div>
+        <div class="table-container" id="table-container" style="display: none;">
+            <div class="table-responsive">
+                {{ table_html | safe }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

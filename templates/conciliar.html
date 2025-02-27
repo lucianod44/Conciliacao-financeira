@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conciliação Financeira</title>
+
+    <!-- Bootstrap e FontAwesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #eef2f7;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 80%;
+            background: rgb(207, 205, 205);
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .btn-custom {
+            border-radius: 8px;
+            font-weight: bold;
+            padding: 10px 15px;
+        }
+
+        .btn-warning,
+        .btn-success {
+            background-color: #2a2c2b;
+            border: none;
+            color: white;
+        }
+
+        .btn-warning:hover,
+        .btn-success:hover {
+            background-color: #3d413e;
+        }
+
+        .card-custom {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid #3498db;
+        }
+    </style>
+
+    <script>
+        function toggleCheckbox(group) {
+            let groupCheckbox = document.getElementById(`checkbox-${group}`);
+            let hiddenInput = document.getElementById(`hidden-${group}`);
+
+            if (groupCheckbox.disabled) return;
+
+            if (groupCheckbox.checked) {
+                hiddenInput.value = hiddenInput.dataset.ids;
+            } else {
+                hiddenInput.value = "";
+            }
+        }
+
+        function selecionarTodos() {
+            let checkboxes = document.querySelectorAll("input[type=checkbox]:not(:disabled)");
+            let todosMarcados = [...checkboxes].every(checkbox => checkbox.checked);
+
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = !todosMarcados;
+                toggleCheckbox(checkbox.id.replace("checkbox-", ""));
+            });
+        }
+
+        function enviarConciliacao(selecionados = null) {
+            let idsSet = new Set(); // Remove duplicatas automaticamente
+
+            if (selecionados) {
+                idsSet.add(selecionados);
+            } else {
+                let checkboxes = document.querySelectorAll("input[type=checkbox]:checked:not(:disabled)");
+
+                checkboxes.forEach(checkbox => {
+                    let hiddenInput = document.getElementById(`hidden-${checkbox.id.replace("checkbox-", "")}`);
+
+                    if (hiddenInput) {
+                        let idsUnicos = hiddenInput.value
+                            .split(",")
+                            .map(id => id.trim())  // Remove espaços extras
+                            .filter(id => id !== "" && !idsSet.has(id)); // Remove valores vazios e duplicados
+
+                        idsUnicos.forEach(id => idsSet.add(id));
+                    }
+                });
+            }
+
+            let idsArray = Array.from(idsSet); // Converte Set para Array
+
+            // 🚀 Verificar se os IDs foram coletados corretamente
+            console.log("IDs Final:", idsArray);
+
+            if (idsArray.length > 0) {
+                document.getElementById("hidden-conciliacao").value = idsArray.join(",");
+                document.getElementById("totalConciliados").innerText = `Total conciliado: ${idsArray.length}`;
+                document.getElementById("conciliacaoForm").submit();
+            } else {
+                alert("Nenhuma movimentação válida selecionada para conciliação.");
+            }
+        }
+
+        function toggleExpand(id) {
+            let element = document.getElementById(`details-${id}`);
+            let button = document.getElementById(`expand-btn-${id}`);
+
+            if (element.style.display === 'none' || element.style.display === '') {
+                element.style.display = 'block';
+                button.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Recolher';
+            } else {
+                element.style.display = 'none';
+                button.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Expandir';
+            }
+        }
+    </script>
+
+
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="text-dark mb-4 fw-bold"><i class="fa-solid fa-file-invoice-dollar"></i> Conciliação Financeira</h2>
+
+        <!-- Cards de contagem -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card border-danger shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger fw-bold">Pendentes</h5>
+                        <p class="card-text fs-3 fw-bold">{{ resumo_conciliacao.get('PENDENTE', 0) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-success shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-success fw-bold">Conciliados</h5>
+                        <p class="card-text fs-3 fw-bold">{{ resumo_conciliacao.get('CONCILIADO', 0) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p id="totalConciliados" class="text-center text-primary"></p>
+
+        <!-- Botões de ação -->
+        <div class="d-flex justify-content-between mb-4">
+            <form action="{{ url_for('excluir_tabela') }}" method="post">
+                <button type="submit" class="btn btn-dark btn-lg rounded-3 px-4">
+                    <i class="fa-solid fa-trash"></i> Carregar Novo Arquivo
+                </button>
+            </form>
+            <button type="button" class="btn btn-outline-secondary btn-lg rounded-3 px-4" onclick="selecionarTodos()">
+                <i class="fa-solid fa-check-double"></i> Selecionar Todos
+            </button>
+            <form id="formConciliacao" action="{{ url_for('executar_conciliacao') }}" method="post">
+                {% for movimento in movimentos %}
+                <input type="checkbox" name="conciliar" value="{{ movimento.id }}">
+                {% endfor %}
+                <button type="button" class="btn btn-primary btn-lg rounded-3 px-4" onclick="enviarConciliacao()">
+                    <i class="fa-solid fa-check-circle"></i> Conciliar Selecionados
+                </button>
+            </form>
+        </div>
+
+        <!-- Formulário de conciliação -->
+        <form id="conciliacaoForm" action="{{ url_for('executar_conciliacao') }}" method="post">
+            <input type="hidden" name="conciliar" id="hidden-conciliacao">
+
+
+            {% for documento, items in conciliacao_resultados|groupby('NR_DOCUMENTO_IDENTIFICACAO') %}
+            <div class="card shadow-sm border-0 bg-white p-3 mb-3 rounded-4">
+                <h5 class="text-dark fw-bold"><i class="fa-solid fa-folder"></i> Documento: {{ documento }}</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="form-check">
+                        {% set conciliado = items[0]['SN_CONCILIADO'] == 'S' %}
+                        <input type="checkbox" class="form-check-input" id="checkbox-{{ documento }}"
+                            onclick="toggleCheckbox('{{ documento }}')" {% if conciliado %}disabled{% endif %}>
+                        <label for="checkbox-{{ documento }}" class="form-check-label text-secondary ms-2">
+                            {% if conciliado %}
+                            <span class="text-success fw-bold">Conciliado ✅</span>
+                            {% else %}
+                            Selecionar
+                            {% endif %}
+                        </label>
+                    </div>
+                    <button class="btn btn-outline-dark btn-sm rounded-3" type="button" id="expand-btn-{{ documento }}"
+                        onclick="toggleExpand('{{ documento }}')">
+                        <i class="fa-solid fa-chevron-down"></i> Expandir
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm rounded-3"
+                        onclick="enviarConciliacao('{{ documento }}')" {% if conciliado %}disabled{% endif %}>
+                        <i class="fa-solid fa-check"></i> Conciliar Documento
+                    </button>
+                </div>
+                <input type="hidden" name="conciliar" id="hidden-{{ documento }}"
+                    data-ids="{% for row in items %}{{ row['NR_DOCUMENTO_IDENTIFICACAO'] }}{% if not loop.last %},{% endif %}{% endfor %}">
+
+                <div id="details-{{ documento }}" style="display: none; margin-top: 10px;">
+                    {% for row in items %}
+                    <div class="d-flex justify-content-between bg-light p-3 border rounded-3 mb-2">
+                        <div>
+                            <h6 class="text-dark fw-semibold"><i class="fa-solid fa-database"></i> Banco</h6>
+                            <p class="text-muted"><strong>Documento:</strong> {{ row['NR_DOCUMENTO_IDENTIFICACAO'] }}
+                            </p>
+                            <p class="text-muted"><strong>Data:</strong> {{ row['DT_MOVIMENTACAO'] }}</p>
+                            <p class="text-muted"><strong>Descrição:</strong> {{ row['CD_MULTI_EMPRESA'] or "Não
+                                informado" }}</p>
+                        </div>
+                        <div>
+                            <h6 class="text-dark fw-semibold"><i class="fa-solid fa-university"></i> Sistema</h6>
+                            <p class="text-muted"><strong>Documento:</strong> {{ row['NR_DOCUMENTO_IDENTIFICACAO'] }}
+                            </p>
+                            <p class="text-muted"><strong>Valor:</strong> R$ {{ row['VL_MOV_BANCO'] | round(2) if
+                                row['VL_MOV_BANCO'] else "0,00" }}</p>
+                            <p class="text-muted"><strong>Data:</strong> {{ row['DT_MOV_BANCO'] or "Não informado" }}
+                            </p>
+                            <p class="text-muted"><strong>Descrição:</strong> {{ row['DS_MOV_BANCO'] or "Não informado"
+                                }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </form>
+    </div>
+</body>
+
+</html>

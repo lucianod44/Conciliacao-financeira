@@ -1,0 +1,348 @@
+/* =================== VARIÁVEIS =================== */
+:root {
+    --primary-color: #fbfcfd; /* Azul mais escuro */
+    --secondary-color: #052e61; /* Cinza */
+    --background-color: #f1f3f4; /* Cinza claro */
+    --text-color: #202124; /* Preto */
+    --text-color-light: #413e3e; /* Branco */
+    --font-family: 'Arial', sans-serif;
+    --font-size-small: 12px;
+    --font-size-medium: 14px;
+    --font-size-large: 16px;
+    --border-radius: 12px; /* Bordas mais arredondadas */
+    --box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada */
+    --padding-small: 10px;
+    --padding-medium: 15px;
+    --padding-large: 20px;
+}
+
+/* =================== GERAL =================== */
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* =================== NAVBAR =================== */
+.navbar {
+    padding: var(--padding-medium);
+    box-shadow: var(--box-shadow);
+}
+
+.navbar .navbar-brand {
+    font-weight: bold;
+    color: white;
+}
+
+
+.navbar .nav-link {
+    color: var(--text-color-light);
+    font-weight: bold;
+    padding: var(--padding-small) var(--padding-medium);
+    border-radius: var(--border-radius);
+    transition: background 0.3s;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    background: var(--secondary-color);
+}
+
+/* =================== CONTAINER PRINCIPAL =================== */
+.container-custom {
+    width: 90%;
+    max-width: 800px;
+    background: var(--text-color-light);
+    padding: var(--padding-large);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin: var(--padding-large) auto;
+}
+
+form {
+    width: 100%;
+}
+
+/* =================== FORMULÁRIO =================== */
+.upload-form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: var(--padding-small);
+}
+
+.upload-form select,
+.upload-form input[type="file"],
+.upload-form button {
+    padding: var(--padding-small);
+    margin-top: var(--padding-small);
+    border-radius: var(--border-radius);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.upload-form button {
+    background: var(--primary-color);
+    color: var(--text-color-light);
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.upload-form button:hover {
+    background: var(--secondary-color);
+}
+
+/* =================== TABELA =================== */
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--padding-large);
+}
+
+.result-table th,
+.result-table td {
+    padding: var(--padding-small);
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.result-table th {
+    background: var(--primary-color);
+    color: var(--text-color-light);
+    font-size: var(--font-size-medium);
+}
+
+/* =================== CARTÕES (CARDS) =================== */
+.card-custom {
+    box-shadow: var(--box-shadow);
+    padding: var(--padding-large);
+    border-radius: var(--border-radius);
+    background: var(--text-color-light);
+    margin-bottom: var(--padding-large);
+}
+
+.card-header {
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+    font-weight: bold;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    padding: var(--padding-medium);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* =================== upload.html =================== */
+.container {
+    width: 90%;
+    margin-top: var(--padding-large);
+}
+
+
+.card {
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* Ajustando o container da tabela */
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: auto;
+    width: 80%;
+    margin: auto;
+}
+
+.table {
+    font-size: var(--font-size-small);
+    width: 100%;
+    table-layout: fixed;
+}
+
+.table th, .table td {
+    text-align: center;
+    padding: var(--padding-small);
+    border: 1px solid #dee2e6;
+}
+
+.table th:nth-child(4), /* DS_MOVIMENTACAO */
+.table td:nth-child(4) {
+    width: 300px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.table th {
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
+    font-size: var(--font-size-medium);
+}
+
+.btn-primary, .btn-secondary {
+    width: 80%;
+    padding: var(--padding-small);
+    font-size: var(--font-size-large);
+    font-weight: bold;
+    margin-top: var(--padding-small);
+    border-radius: var(--border-radius);
+    transition: background 0.3s;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: var(--text-color-light);
+}
+
+
+
+.btn-secondary:hover {
+    background: var(--primary-color);
+}
+
+.btn-custom {
+    padding: 5px 10px;
+    font-size: var(--font-size-medium);
+    border-radius: var(--border-radius);
+    margin-right: 10px;
+    transition: background 0.3s;
+}
+
+
+.btn-custom-primary:hover {
+    background: var(--secondary-color);
+}
+
+.btn-custom-secondary {
+    background: var(--secondary-color);
+    color: var(--text-color-light);
+}
+
+.btn-custom-secondary:hover {
+    background: var(--primary-color);
+}
+
+.card-custom {
+    box-shadow: var(--box-shadow);
+    padding: var(--padding-large);
+    border-radius: var(--border-radius);
+    background: var(--text-color-light);
+    margin-bottom: var(--padding-large);
+}
+
+.card-header {
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+    font-weight: bold;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    padding: var(--padding-medium);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.table {
+    font-size: var(--font-size-small);
+    width: 100%;
+    table-layout: fixed;
+}
+
+.table th, .table td {
+    text-align: center;
+    padding: var(--padding-small);
+    border: 1px solid #dee2e6;
+}
+
+.table th:nth-child(4), /* DS_MOVIMENTACAO */
+.table td:nth-child(4) {
+    width: 300px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.table th {
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
+    font-size: var(--font-size-medium);
+}
+
+.expand-btn {
+    background: none;
+    border: none;
+    color: var(--text-color-light);
+    font-size: var(--font-size-medium);
+    cursor: pointer;
+}
+
+.expand-btn {
+    background: none;
+    border: none;
+    color: var(--text-color-light);
+    font-size: var(--font-size-medium);
+    cursor: pointer;
+}
+
+/* =================== conciliacao.html =================== */
+.container {
+    max-width: 95%;
+    margin-top: var(--padding-large);
+}
+
+h1{
+    color: #dce0e4;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: var(--padding-large);
+}
+
+.card {
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+
+.card-header {
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+    font-weight: bold;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--padding-medium);
+}
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.table {
+    font-size: var(--font-size-small);
+}
+
+.btn-primary, .btn-secondary {
+    width: 100%;
+    padding: var(--padding-small);
+    font-size: var(--font-size-large);
+    font-weight: bold;
+    margin-top: var(--padding-small);
+    border-radius: var(--border-radius);
+    transition: background 0.3s;
+}
+
+.expand-btn {
+    background: none;
+    border: none;
+    color: var(--text-color-light);
+    font-size: var(--font-size-medium);
+    cursor: pointer;
+}
+
