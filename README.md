@@ -1,5 +1,23 @@
 ### Olá! Eu sou Luciano Uchoa.🖐
 
+📊 Sistema de Conciliação Financeira
+🔹 Sobre o Projeto
+Este é um sistema web desenvolvido com Flask, HTML, CSS e JavaScript para auxiliar na conciliação financeira de documentos de transações. O objetivo é facilitar a validação e o cruzamento de dados de arquivos de cartões de crédito, garantindo que todas as informações estejam corretas e conciliadas.
+
+🚀 Funcionalidades
+✅ Upload de Arquivo: O usuário faz o upload de um arquivo contendo número do documento, data e empresa.
+✅ Validação da Empresa: O sistema verifica se a empresa escolhida é a mesma informada no arquivo.
+✅ Processo de Conciliação:
+
+Realiza o de-para entre os dados do arquivo e os registros do sistema.
+Permite conciliar individualmente ou todos de uma vez.
+Identifica documentos já conciliados e exibe a contagem de registros conciliados e pendentes.
+✅ Consulta de Documentos: O usuário pode pesquisar documentos e verificar seu status de conciliação.
+🛠️ Tecnologias Utilizadas
+Back-end: Flask (Python)
+Front-end: HTML, CSS, JavaScript
+Banco de Dados: Oracle (ou outro, se aplicável)
+
 [![linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/luciano-da-silva-a561586a)
 [![GITHUB](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lucianod44)
 [![GMAIL](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](https://lucianod44@gmail.com)
